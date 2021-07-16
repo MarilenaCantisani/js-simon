@@ -19,6 +19,8 @@ il software mostra in un alert quanti e quali dei numeri da indovinare sono stat
 var numbersDrawn = [];
 var totalNumbers = 5;
 
+var userNumbers = [];
+
 
 while (numbersDrawn.length < totalNumbers) {
     var randomNumbers = getRandomNumber(1, 100);
@@ -28,6 +30,29 @@ while (numbersDrawn.length < totalNumbers) {
     }
 }
 console.log("Array numeri estratti: ", numbersDrawn);
+alert("Memorizza i seguenti numeri: " + numbersDrawn);
+
+setTimeout(function () {
+    while (userNumbers.length < totalNumbers) {
+        var chosenNumber = prompt("Dimmi un numero tra quelli visti in precedenza");
+        if (isInArray(chosenNumber, numbersDrawn)) {
+            alert("Hai vinto! hai indovinato " + userNumbers.length + " numeri");
+        } else {
+            if (isInArray(chosenNumber, userNumbers)) {
+                alert("Numero già inserito, scegli un altro numero!");
+            } else {
+                userNumbers.push(chosenNumber);
+            }
+        }
+
+    }
+
+    console.log("Numeri scelti dall'utente", userNumbers);
+
+}, 3000);
+
+
+
 
 
 //**************************************** FUNCTION SECTION ****************************************//
@@ -35,6 +60,7 @@ console.log("Array numeri estratti: ", numbersDrawn);
 function getRandomNumber(min, max) {
     return randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
 }
+
 //TODO Function that controls the inclusion of an element in an array 
 function isInArray(needle, haystack) {
     var found = false;
