@@ -8,23 +8,16 @@ Dopo che sono stati inseriti i 5 numeri,
 il software mostra in un alert quanti e quali dei numeri da indovinare sono stati individuati.
 (Bonus: stampare in pagina il risultato, in alternativa all'alert.) */
 
-//? #1: Generare 5 numeri casuali tutti diversi 
-//? #2: Stampare i numeri generati in un alert 
-//? #3: Al click ok dell'alert far partire un timer di 30 secondi 
-//? #4: Terminati i secondi, chiedere x5 volte all'utenti di inserire un numero tra quelli visti precedentemente
-//? #5: Controllare se i numeri scelti sono uguali a quelli randomimzzati 
-//? #6: Stampare in un alert quanti e quali nueri sono stati indovinati
-
-//* Create an array with five random numbers 
+/* --------------------------- Game preparation --------------------------- */
 var numbersDrawn = [];
 var totalNumbers = 5;
 
-var userNumbers = [];
-
-
+//* Create an array with five random numbers 
 while (numbersDrawn.length < totalNumbers) {
     var randomNumbers = getRandomNumber(1, 100);
     console.log("Numero estratto: ", randomNumbers);
+
+    // Check if it is already present in the array and indert it
     if (!isInArray(randomNumbers, numbersDrawn)) {
         numbersDrawn.push(randomNumbers);
     }
@@ -32,44 +25,40 @@ while (numbersDrawn.length < totalNumbers) {
 console.log("Array numeri estratti: ", numbersDrawn);
 alert("Memorizza i seguenti numeri: " + numbersDrawn);
 
+
+/* ---------------------------------- Game --------------------------------- */
+//* Enter a countdown before asking the user the numbers
 setTimeout(function () {
+    var userNumbers = [];
+    var numbersGuessed = [];
+
     while (userNumbers.length < totalNumbers) {
-        var chosenNumber = prompt("Dimmi un numero tra quelli visti in precedenza");
-        if (isInArray(chosenNumber, numbersDrawn)) {
-            alert("Hai vinto! hai indovinato " + userNumbers.length + " numeri");
-        } else {
-            if (isInArray(chosenNumber, userNumbers)) {
-                alert("Numero già inserito, scegli un altro numero!");
-            } else {
-                userNumbers.push(chosenNumber);
+        var chosenNumber = getUserNumber();
+
+        // Check if the selected number was already entered
+        if (!isInArray(chosenNumber, userNumbers)) {
+            userNumbers.push(chosenNumber);
+            // Check if it is present in the numbers to be guessed and insert it in the array of numbers guessed
+            if (isInArray(chosenNumber, numbersDrawn)) {
+                numbersGuessed.push(chosenNumber);
             }
+        } else {
+            alert("Hai già scelto questo numero, inserisci un numero diverso")
         }
-
     }
-
-    console.log("Numeri scelti dall'utente", userNumbers);
-
-}, 3000);
-
-
-
-
-
-//**************************************** FUNCTION SECTION ****************************************//
-//TODO Function that generates a random number
-function getRandomNumber(min, max) {
-    return randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-//TODO Function that controls the inclusion of an element in an array 
-function isInArray(needle, haystack) {
-    var found = false;
-    var i = 0;
-    while (!found & i < haystack.length) {
-        if (needle === haystack[i]) {
-            faund = true;
-        }
-        i++;
+    // Check if the user has not guessed any number
+    if (numbersGuessed.length === 0) {
+        alert("Non hai indovinato nessun numero tra quelli precedenti!")
     }
-    return found;
-}
+    // Check if the user has only guessed a number
+    if (numbersGuessed.length === 1) {
+        alert("Hai indovinato " + numbersGuessed.length + " numero: " + numbersGuessed + "!");
+    }
+    // Print to the user how many and which numbers he guessed
+    alert("Hai indovinato " + numbersGuessed.length + " numeri: " + numbersGuessed + "!");
+}, 30000);
+
+
+
+
+
